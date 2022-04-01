@@ -519,7 +519,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.UnitestCI;
 				PRODUCT_NAME = UnitestCI;
 				PROVISIONING_PROFILE = "0baceea8-2436-4cc6-ba6b-efaa6865712f";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development org.reactjs.native.UnitestCI 1648796198";
+				PROVISIONING_PROFILE_SPECIFIER = Demo_Fastlane;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -551,7 +551,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.UnitestCI;
 				PRODUCT_NAME = UnitestCI;
 				PROVISIONING_PROFILE = "0baceea8-2436-4cc6-ba6b-efaa6865712f";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development org.reactjs.native.UnitestCI 1648796198";
+				PROVISIONING_PROFILE_SPECIFIER = Demo_Fastlane;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
