@@ -75,11 +75,11 @@ platform :ios do
     # Automatic sign
     sync_device_info
     # match(git_private_key: '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')
-    # match(type: "development", keychain_name: ENV["KEYCHAIN_NAME"], keychain_password: ENV["KEYCHAIN_PASSWORD"])
-    match(app_identifier: 'org.reactjs.native.UnitestCI', type: 'development', readonly: true)
+    match(type: "development", keychain_name: ENV["KEYCHAIN_NAME"], keychain_password: ENV["KEYCHAIN_PASSWORD"])
+    # match(app_identifier: 'org.reactjs.native.UnitestCI', type: 'development', readonly: true)
     update_code_signing_settings(
       use_automatic_signing: false,
-      # code_sign_identity: 'Apple Development: Hoàng Minh (7S5TM33YVP)'
+      code_sign_identity: 'Apple Development: Hoàng Minh (7S5TM33YVP)'
     )
     update_project_provisioning(
       profile: "./fastlane/certs/Demo_Fastlane.mobileprovision",
