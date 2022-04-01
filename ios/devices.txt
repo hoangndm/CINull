@@ -1,0 +1,2 @@
+Device ID	Device Name
+fba73063ff67d26cd294070c2f080858f6e0dfa1	longly151 - iPhone 6s Plus	ios

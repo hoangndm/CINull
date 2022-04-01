@@ -1,0 +1,98 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  ### --- HELPER --- ###
+  lane :increment_version do
+    path = '../app/build.gradle'
+    s = File.read(path)
+
+    # Version Code
+    vc = /versionCode\s+(\d+)/ 
+    versionCode = s[vc, 1].to_i
+    s[vc, 1] = (versionCode + 1).to_s
+  
+    # Version Name
+    vn = /versionName\s\"+(\d+.\d+.\d+)\"/ 
+    versionName = s[vn, 1]
+    versionNameArray = versionName.split('.',3)
+    newVersionName = versionNameArray[0] + '.' + versionNameArray[1] + '.' + (versionNameArray[2].to_i+1).to_s 
+    s[vn, 1] = newVersionName
+      
+    f = File.new(path, 'w')
+    f.write(s)
+    f.close
+  end
+
+  desc "Push a new beta build to Firebase App Distribution"
+  lane :firebase_beta do
+    firebase_app_distribution(
+      app: ENV["FIREBASE_ANDROID_APP"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes: "Lots of amazing new features to test out!",
+      groups: ENV["FIREBASE_ANDROID_GROUPS"]
+    )
+  end
+
+  lane :commit_version do
+    sh 'git config --global user.name "hoangndm" && git config --global user.email "hoangndm99@gmail.com"'
+    git_commit(path: ["./app/build.gradle"], message: "Version Bump")
+    push_to_git_remote(remote_branch: "master", force: true)
+  end
+
+  ### --- TESTING --- ###
+  desc "Android Testing"
+  lane :test do
+    gradle(task: "test")
+  end
+  lane :beta_build do
+    # gradle(task: "clean assembleRelease")
+    # crashlytics
+
+    # Google SignIn Bugs on CI => Replace (task: 'assemble') with (task: 'app:assemble')
+    # https://stackoverflow.com/questions/52512326/com-android-builder-internal-aapt-v2-aapt2exception-android-resource-compilatio
+    gradle(
+      task: 'app:assemble',
+      build_type: 'Release'
+    )
+  end
+
+  desc "Push a new beta build"
+  lane :staging do
+    beta_build
+    firebase_beta
+  end
+
+  ### --- RELEASE --- ###
+  lane :release_build do
+    increment_version
+    gradle(
+      task: 'app:bundle',
+      build_type: 'Release'
+    )
+  end
+
+  desc "Push a new release build"
+  # fastlane supply init => Download metadata for an existing app
+  lane :release do
+    release_build
+    appcenter_upload
+    commit_version
+  end
+
+##############################################################################################################
+end

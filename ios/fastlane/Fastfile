@@ -1,0 +1,203 @@
+# # This file contains the fastlane.tools configuration
+
+default_platform(:ios)
+
+platform :ios do
+  identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+  lane :sync_device_info do
+    register_devices(
+      devices_file: "./devices.txt"
+    )
+  end
+
+  lane :manual_sign do
+    update_code_signing_settings(
+      use_automatic_signing: false,
+    )
+    install_provisioning_profile(path: "./fastlane/certs/Demo_Fastlane.mobileprovision")
+    import_certificate(
+      keychain_name: ENV["KEYCHAIN_NAME"],
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      certificate_path: ENV["CERTIFICATE_PATH"],
+      certificate_password: ENV["CERTIFICATE_PASSWORD"]
+    )
+    update_project_provisioning(
+      profile: ENV["PROVISIONING_PATH"]
+    )
+  end
+
+  lane :increment_version do
+    increment_build_number
+    version = get_version_number(target: ENV["SCHEME"])
+    increment_version_number(version_number: version)
+    increment_version_number()
+  end
+  
+  lane :commit_version do
+    commit_version_bump(
+      message: 'Version Bump',
+      include: %w[package-lock.json ios/Podfile.lock],
+      xcodeproj: ENV["SCHEME_PATH"],
+    )
+    push_to_git_remote(remote_branch: "master", force: true)
+  end
+  
+  desc "Push a new beta build to Firebase App Distribution"
+  lane :firebase_beta do
+    # increment_build_number(xcodeproj: ENV["SCHEME_PATH"])
+    # match(app_identifier: 'org.reactjs.native.UnitestCI', type: 'development', readonly: true)
+    # build_app(workspace: ENV["WORKSPACE"], scheme: ENV["SCHEME"],export_method: "development")
+
+    
+    firebase_app_distribution(
+      app: ENV["FIREBASE_IOS_APP"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes: "Lots of amazing new features to test out!",
+      groups: ENV["FIREBASE_IOS_GROUPS"]
+    )
+  end
+
+  ### --- BETA --- ###
+  
+  desc "[Option 2] Sync All Development (Match => Github)"
+  lane :beta_sign do
+    create_keychain(
+      name: ENV["KEYCHAIN_NAME"],
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: true,
+      # password: ENV["KEYCHAIN_PASSWORD"]
+    )
+    # manual_sign
+
+    # Automatic sign
+    sync_device_info
+    # match(git_private_key: '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')
+    # match(type: "development", keychain_name: ENV["KEYCHAIN_NAME"], keychain_password: ENV["KEYCHAIN_PASSWORD"])
+    match(app_identifier: 'org.reactjs.native.UnitestCI', type: 'development', readonly: true)
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      # code_sign_identity: 'Apple Development: Hoàng Minh (7S5TM33YVP)'
+    )
+    update_project_provisioning(
+      profile: "./fastlane/certs/Demo_Fastlane.mobileprovision",
+    )
+    # update_project_provisioning(profile: ENV["sigh_#{identifier}_development_profile-path"])
+  end
+
+  lane :beta_build do
+    beta_sign
+    increment_version
+    build_app(
+      scheme: ENV["SCHEME"],
+      export_method: "development",
+    )
+  end
+
+  desc "Push a new beta build"
+  lane :beta do
+    beta_sign
+    build_beta
+    firebase_beta
+  end
+
+  ### --- RELEASE --- ###
+
+  lane :release_sign do
+    appcenter_fetch_devices
+    beta_sign
+  end
+
+  lane :release_build do
+    release_sign
+    increment_version
+
+    build_app(
+      scheme: ENV["SCHEME"],
+      export_method: "development",
+      include_bitcode: true
+    )
+  end
+
+  desc "Push a new release build"
+  lane :release do
+    release_build
+    appcenter_upload
+    commit_version
+  end
+
+##############################################################################################################
+
+  desc "Code Signing"
+  lane :codesigning do
+    create_keychain(
+      name: ENV["KEYCHAIN_NAME"],
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: true,
+      password: ENV["KEYCHAIN_PASSWORD"]
+    )
+    install_provisioning_profile(path: ENV["PROVISIONING_PATH"])
+    install_provisioning_profile(path: "./fastlane/certs/Demo_Fastlane.mobileprovision")
+
+    import_certificate(
+      keychain_name: ENV["KEYCHAIN_NAME"],
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      certificate_path: ENV["CERTIFICATE_PATH"],
+      certificate_password: ENV["CERTIFICATE_PASSWORD"]
+    )
+
+    update_project_team(
+      path: ENV["SCHEME_PATH"],
+      teamid: ENV["TEAM_ID"]
+    )
+  end
+
+  desc "iOS Build Beta"
+  lane :build_beta do
+    update_project_provisioning(
+      profile: ENV["PROVISIONING_PATH"],
+    )
+    build_app(
+      scheme: ENV["SCHEME"],
+      workspace: ENV["WORKSPACE"],
+      export_method: "development",
+    )
+  end
+
+
+  desc "iOS Testing"
+  lane :test do
+    run_tests(
+      workspace: ENV["WORKSPACE"],
+      devices: ["iPhone 11"],
+      scheme: ENV["SCHEME"]
+    )
+  end
+
+  desc "iOS Build Release"
+  lane :build_release do
+    update_project_provisioning(
+      profile: "./fastlane/certs/Demo_Fastlane.mobileprovision",
+    )
+    build_app(
+      scheme: ENV["SCHEME"],
+      workspace: ENV["WORKSPACE"],
+      include_bitcode: true,
+      export_method: "app-store",
+    )
+  end
+
+  # lane :release do
+  #   fastlane snapshot init
+  #   capture_screenshots
+  #   build_release
+  #   upload_to_app_store(
+  #     force: true
+  #   )
+  # end
+
+end

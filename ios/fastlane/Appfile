@@ -1,0 +1,3 @@
+app_identifier("org.reactjs.native.UnitestCI") # e.g. com.krausefx.app
+apple_id("hoangndm99@gmail.com") # Your Apple email address
+team_id("H6NS7WH764") # Your Team ID
