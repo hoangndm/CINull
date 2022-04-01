@@ -100,6 +100,7 @@ platform :ios do
   desc "Push a new beta build"
   lane :beta do
     increment_version
+    install_provisioning_profile(path: "./fastlane/certs/Demo_Fastlane.mobileprovision")
     beta_sign
     build_beta
     firebase_beta
