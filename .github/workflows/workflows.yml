@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: Xcode - Build and Analyze
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build and Test default scheme using any available iPhone simulator
+    name: Build and analyse default scheme using xcodebuild command
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
@@ -25,6 +25,8 @@ jobs:
         run: yarn install
       - name: Install pods
         run: cd ios && pod install && cd ..
+      - name: Execute Fastlane version
+        run: cd ios && fastlane increment_version && cd ..
       - name: Execute Fastlane commandss
         run: cd ios && fastlane beta
   # release-android:
