@@ -502,7 +502,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Hoàng Minh (7S5TM33YVP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Hoàng Minh (7S5TM33YVP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = H6NS7WH764;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = UnitestCI/Info.plist;
@@ -535,7 +535,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Hoàng Minh (7S5TM33YVP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Hoàng Minh (7S5TM33YVP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = H6NS7WH764;
 				INFOPLIST_FILE = UnitestCI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
