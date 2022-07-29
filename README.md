@@ -170,4 +170,21 @@ Now try and run CocoaPods.
 
 P.S.: Thanks to samanthadotcom#7043 (discord)
 
+
+## Data structure
+
+```
+  Device:{
+    id: "string",
+     name: "string",
+     type: "string",
+     ip: "string",
+     port: "string",
+     status: "string",
+     createdAt: "string",
+     updatedAt: "string",
+     deletedAt: "string",
+  }
+```
+
 # MOVINCOOL
