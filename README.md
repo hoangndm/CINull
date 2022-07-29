@@ -1,4 +1,4 @@
-# Moovincool
+# MOVINCOOL
 
 React Native
 Make sure setup React native https://reactnative.dev/docs/environment-setup. We Should setup yarn also https://classic.yarnpkg.com/en/docs/install/#mac-stable amd for ios, make sure https://cocoapods.org is setup.
@@ -9,7 +9,7 @@ The boilerplate provides an architecture optimized for building solid cross-plat
   <img src="https://i.ibb.co/YZPPyXq/icon-Android.png" width="200">
 </p>
 
-### Folder structure
+## Folder structure
 
 ```
 ├── ...
@@ -139,7 +139,7 @@ yarn android
 # react-native run-android --variant=Debug
 ```
 
-### Commands
+## Commands
 
 |                 | Remark                                                             |
 | --------------- | ------------------------------------------------------------------ |
@@ -170,4 +170,4 @@ Now try and run CocoaPods.
 
 P.S.: Thanks to samanthadotcom#7043 (discord)
 
-# moovincool
+# MOVINCOOL
