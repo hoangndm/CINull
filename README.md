@@ -1,59 +1,173 @@
-## [fastlane match](https://docs.fastlane.tools/actions/match/)
+# Moovincool
 
-This repository contains all your certificates and provisioning profiles needed to build and sign your applications. They are encrypted using OpenSSL via a passphrase.
+React Native
+Make sure setup React native https://reactnative.dev/docs/environment-setup. We Should setup yarn also https://classic.yarnpkg.com/en/docs/install/#mac-stable amd for ios, make sure https://cocoapods.org is setup.
 
-**Important:** Make sure this repository is set to private and only your team members have access to this repo.
+The boilerplate provides an architecture optimized for building solid cross-platform mobile applications through separation of concerns between UI and business logic.
 
-Do not modify this file, as it gets overwritten every time you run _match_.
+<p align="center">
+  <img src="https://i.ibb.co/YZPPyXq/icon-Android.png" width="200">
+</p>
 
-### Installation
-
-Make sure you have the latest version of the Xcode command line tools installed:
-
-```
-xcode-select --install
-```
-
-Install _fastlane_ using
+### Folder structure
 
 ```
-[sudo] gem install fastlane -NV
+├── ...
+├── __mocks__/
+├── __tests__/
+├── android/
+├── ios/
+├── src/
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── icons/
+│   │   ├── images/
+│   ├── components/
+│   │   ├── bottomSheet/
+│   │   ├── container/
+│   │   ├── text/
+│   │   ├── hooks/
+│   ├── configs/
+│   │   ├── language/
+│   │   │   ├── en.tsx
+│   │   │   ├── ...
+│   ├── core/
+│   │   ├── common/
+│   │   │   ├── BlockCustom
+│   │   │   ├── Button
+│   │   │   ├── ButtonBack
+│   │   │   ├── DateInput
+|   │   │   ├── EmptyView
+│   │   │   ├── FlastlistHorizontal
+│   │   │   ├── Header
+│   │   │   ├── IconButton
+│   │   │   ├── ImageView
+│   │   │   ├── Input
+│   │   │   ├── ListBottomSheet
+│   │   │   ├── Loading
+│   │   │   ├── Popup
+│   │   │   ├── Progress
+│   │   │   ├── SearchBox
+│   │   │   ├── StatusBar
+│   │   │   ├── styles
+│   │   │   ├── TextCustom
+│   │   │   ├── ...
+│   │   ├── helpers/
+│   │   │   ├── index.tsx
+|   │   │   ├── isNote8or9.tsx
+│   │   │   ├── sizePixel.tsx
+|   │   │   ├── sizeScreen.tsx
+|   │   │   ├── Validation.tsx
+│   │   │   ├── ...
+│   │   ├── redux/
+│   │   │   ├── action.ts
+│   │   │   ├── reducers.ts
+│   │   │   ├── store.ts
+│   │   │   ├── ...
+│   │   ├── utils/
+│   │   │   ├── AppHelper.ts
+│   │   │   ├── AppView.ts
+│   │   │   ├── default.ts
+│   │   │   ├── navigation.ts
+│   │   │   ├── types.ts
+│   │   │   ├── ...
+│   ├── navigaiton/
+│   │   │   ├── DrawerContent.tsx
+│   │   │   ├── index.tsx
+│   │   │   ├── NavigaitonType.tsx
+|   │   │   ├── rootNavigation.tsx
+|   │   │   ├── styles.tsx
+│   │   │   ├── ...
+│   ├── screens
+│   │   ├── Main
+│   │   │   ├── Contact
+│   │   │   ├── Home
+│   │   │   │   ├── advancedSetting
+│   │   │   │   ├── components
+│   │   │   │   ├── remoteAccess
+│   │   │   │   ├── default.tsx
+│   │   │   │   ├── HomeScreen.tsx
+│   │   │   │   ├── styles.tsx
+│   │   │   ├── Manual
+│   │   │   ├── Pairing
+└── ...
 ```
 
-or alternatively using `brew install fastlane`
+### Getting Started
 
-### Usage
-
-Navigate to your project folder and run
+Make sure node version installed is `>=12.x.x`. Then install using yarn (or npm):
 
 ```
-fastlane match appstore
+yarn install
 ```
 
-```
-fastlane match adhoc
-```
+Start the Metro Bundler:
 
 ```
-fastlane match development
+yarn start
 ```
 
+###### iOS
+
+One time. Move to `ios` folder and install pods:
+
 ```
-fastlane match enterprise
+cd ios && pod install
 ```
 
-For more information open [fastlane match git repo](https://docs.fastlane.tools/actions/match/)
+Launch application from XCode (`Command + R`) Or launch from Terminal:
 
-### Content
+```
+yarn ios
+# runs the following command. change device name here
+# `npx react-native run-ios --simulator='iPhone 11'`
+```
 
-#### certs
+###### Android
 
-This directory contains all your certificates with their private keys
+Start an Android Simulator from:
 
-#### profiles
+```
+Android Studio > Tools > AVD Manager > Run any device
+```
 
-This directory contains all provisioning profiles
+Similarly, run from Android Studio itself Or from Terminal:
 
----
+```
+yarn android
+# runs the following command
+# react-native run-android --variant=Debug
+```
 
-For more information open [fastlane match git repo](https://docs.fastlane.tools/actions/match/)
+### Commands
+
+|                 | Remark                                                             |
+| --------------- | ------------------------------------------------------------------ |
+| `yarn start`    | Starts metro bundler                                               |
+| `yarn ios`      | Starts iOS app. Start metro bundler first                          |
+| `yarn android`  | Starts Android app. Start metro bundler and Android emulator first |
+| `yarn lint`     | linting                                                            |
+| `yarn lint:fix` | tries to fix linting issues automatically                          |
+
+#### M1 support
+
+Some additional steps may be required for project to work on M1.
+
+- Disable Rosetta in Terminal
+- Install ffi
+
+```
+sudo arch -x86_64 gem install ffi
+```
+
+- Re-install dependencies
+
+```
+arch -x86_64 pod install
+```
+
+Now try and run CocoaPods.
+
+P.S.: Thanks to samanthadotcom#7043 (discord)
+
+# moovincool
