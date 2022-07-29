@@ -175,16 +175,30 @@ P.S.: Thanks to samanthadotcom#7043 (discord)
 
 ```
   Device:{
-    id: "string",
-     name: "string",
-     type: "string",
-     ip: "string",
-     port: "string",
-     status: "string",
-     createdAt: "string",
-     updatedAt: "string",
-     deletedAt: "string",
+    id: string;
+    name: string;
+    status: string;
+    error_time: string | null;
+    machine_info: Array[];
+    room_temp: number | null;
+    operation_mode: string;
+    temperature: number | null;
+    fan_mode: string;
+    speed: number | null;
+    lock_mode: boolean;
+    temperatureType: number;
+    error_name: string;
   }
 ```
+#### How to get the data?
 
+```
+  ...
+  import {useSelector, useDispatch} from 'react-redux';
+  ...
+  
+  const devices = useSelector((state) => state.devices);
+  console.log(device);
+  ...
+```
 # MOVINCOOL
