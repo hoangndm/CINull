@@ -179,7 +179,7 @@ P.S.: Thanks to samanthadotcom#7043 (discord)
     name: string;
     status: string;
     error_time: string | null;
-    machine_info: Array<any>;
+    machine_info: Array[];
     room_temp: number | null;
     operation_mode: string;
     temperature: number | null;
@@ -190,5 +190,15 @@ P.S.: Thanks to samanthadotcom#7043 (discord)
     error_name: string;
   }
 ```
+#### How to get the data?
 
+```
+  ...
+  import {useSelector, useDispatch} from 'react-redux';
+  ...
+  
+  const devices = useSelector((state) => state.devices);
+  console.log(device);
+  ...
+```
 # MOVINCOOL
