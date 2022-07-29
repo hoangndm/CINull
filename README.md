@@ -175,15 +175,19 @@ P.S.: Thanks to samanthadotcom#7043 (discord)
 
 ```
   Device:{
-    id: "string",
-     name: "string",
-     type: "string",
-     ip: "string",
-     port: "string",
-     status: "string",
-     createdAt: "string",
-     updatedAt: "string",
-     deletedAt: "string",
+    id: string;
+    name: string;
+    status: string;
+    error_time: string | null;
+    machine_info: Array<any>;
+    room_temp: number | null;
+    operation_mode: string;
+    temperature: number | null;
+    fan_mode: string;
+    speed: number | null;
+    lock_mode: boolean;
+    temperatureType: number;
+    error_name: string;
   }
 ```
 
